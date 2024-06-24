@@ -11439,16 +11439,25 @@
       },
       events,
       eventClick(data) {
-        alert(`User clicked the event ${data.event.title}`);
+        console.log(data.event.extendedProps.slug);
+        let element = document.querySelector(`[wfu-lightbox-group="${data.event.extendedProps.slug}"]`);
+        let firstChild;
+        if (element) {
+          firstChild = element.querySelector(".w-dyn-item");
+          firstChild?.querySelector(".w-inline-block").click();
+        }
       }
     });
     calendar.render();
+    calendar.setOption("height", 500);
+    calendar.setOption("contentHeight", 400);
   });
   var getEvents = () => {
     const scripts = document.querySelectorAll('[data-element="event-data"]');
     const events = [...scripts].map((script) => {
       const event = JSON.parse(script.textContent);
       event.date = new Date(event.date);
+      event.slug = event.slug;
       return event;
     });
     return events;
